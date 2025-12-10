@@ -454,95 +454,54 @@ input[type="file"]::file-selector-button {
    ========================= */
 /* Reset */
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  margin: 0;
-  padding: 0;
+@media (max-width: 768px) {
+  /* Header ustma-ust chiqadi */
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: .6rem;
+    padding: .8rem;
+  }
+
+  /* Qidiruv kengayadi */
+  .search {
+    width: 100%;
+    flex-direction: column;
+  }
+  .search input { width: 100%; }
+
+  /* O‘ngdagi nav elementlari */
+  .nav-right {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  /* Hamburger tugma */
+  .menu-toggle {
+    font-size: 1.4rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: .5rem;
+    padding: .4rem .6rem;
+    cursor: pointer;
+    display: block;
+  }
+
+  /* Mobil menyu */
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    gap: .6rem;
+    background: var(--card);
+    padding: 1rem;
+    border-radius: .6rem;
+  }
+  .mobile-nav.open { display: flex; }
+
+  /* Footer markazda */
+  .footer { text-align: center; }
 }
 
-/* Header */
-.header {
-  position: sticky;
-  top: 0;
-  background: var(--card);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-.nav-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.menu-btn, .theme-btn {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: var(--text);
-}
-
-/* Mobile nav */
-.mobile-nav {
-  display: none;
-  flex-direction: column;
-  gap: 0.8rem;
-  background: var(--card);
-  padding: 1rem;
-  border-radius: 0.6rem;
-}
-.mobile-nav.open { display: flex; }
-.mobile-nav a {
-  padding: 0.8rem;
-  text-decoration: none;
-  color: var(--text);
-  border-bottom: 1px solid var(--line);
-}
-
-/* Search */
-.search {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  padding: 1rem;
-}
-.search input {
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  border: 1px solid var(--line);
-}
-.search-btn {
-  padding: 0.6rem;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 0.4rem;
-}
-
-/* Sections */
-.section {
-  padding: 1rem;
-}
-.section h2 {
-  font-size: 1.2rem;
-  margin-bottom: 0.6rem;
-}
-.film-list, .category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
-  background: var(--card);
-  border-top: 1px solid var(--line);
-}
 
 
 
