@@ -452,50 +452,33 @@ input[type="file"]::file-selector-button {
 /* =========================
    TELEFON VERSIYASI (max-width: 768px)
    ========================= */
-@media (max-width: 768px) {
-  /* Header ustma-ust chiqadi */
-  .header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: .6rem;
-    padding: .8rem;
-  }
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', sans-serif; background:#111; color:#eee; }
 
-  /* Qidiruv kengayadi */
-  .search {
-    width: 100%;
-    flex-direction: column;
-  }
-  .search input { width: 100%; }
+/* Header */
+.header { position:sticky; top:0; background:#222; padding:10px; display:flex; flex-direction:column; }
+.nav-mobile { display:flex; justify-content:space-between; align-items:center; }
+.menu-btn, .theme-btn { background:none; border:none; font-size:1.5rem; color:#eee; }
 
-  /* O‘ngdagi nav elementlari */
-  .nav-right {
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
+/* Mobile menu */
+.mobile-menu { display:none; flex-direction:column; background:#333; padding:10px; }
+.mobile-menu a { color:#eee; padding:8px; text-decoration:none; border-bottom:1px solid #444; }
+.mobile-menu.open { display:flex; }
 
-  /* Hamburger tugma */
-  .menu-toggle {
-    font-size: 1.4rem;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: .5rem;
-    padding: .4rem .6rem;
-    cursor: pointer;
-    display: block;
-  }
+/* Toasts */
+.toasts { position:fixed; bottom:10px; left:50%; transform:translateX(-50%); }
+.toast { background:#444; color:#fff; padding:10px 15px; margin:5px; border-radius:5px; }
 
-  /* Mobil menyu */
-  .mobile-nav {
-    display: none;
-    flex-direction: column;
-    gap: .6rem;
-    background: var(--card);
-    padding: 1rem;
-    border-radius: .6rem;
-  }
-  .mobile-nav.open { display: flex; }
+/* Main content */
+.container { padding:15px; }
 
-  /* Footer markazda */
-  .footer { text-align: center; }
+/* Footer */
+.footer { text-align:center; padding:15px; background:#222; font-size:0.9rem; }
+
+/* Responsive */
+@media(min-width:768px){
+    .nav-mobile { justify-content:flex-start; gap:20px; }
+    .mobile-menu { display:flex; flex-direction:row; background:none; }
+    .mobile-menu a { border:none; padding:0 10px; }
 }
