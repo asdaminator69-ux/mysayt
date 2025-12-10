@@ -453,32 +453,94 @@ input[type="file"]::file-selector-button {
    TELEFON VERSIYASI (max-width: 768px)
    ========================= */
 /* Reset */
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Segoe UI', sans-serif; background:#111; color:#eee; }
 
-/* Header */
-.header { position:sticky; top:0; background:#222; padding:10px; display:flex; flex-direction:column; }
-.nav-mobile { display:flex; justify-content:space-between; align-items:center; }
-.menu-btn, .theme-btn { background:none; border:none; font-size:1.5rem; color:#eee; }
+@media (max-width: 768px) {
+  /* Header ustma-ust chiqadi */
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
 
-/* Mobile menu */
-.mobile-menu { display:none; flex-direction:column; background:#333; padding:10px; }
-.mobile-menu a { color:#eee; padding:8px; text-decoration:none; border-bottom:1px solid #444; }
-.mobile-menu.open { display:flex; }
+  /* Qidiruv kengayadi */
+  .search {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .search input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--line);
+    font-size: 1rem;
+  }
 
-/* Toasts */
-.toasts { position:fixed; bottom:10px; left:50%; transform:translateX(-50%); }
-.toast { background:#444; color:#fff; padding:10px 15px; margin:5px; border-radius:5px; }
+  /* O‘ngdagi nav elementlari */
+  .nav-right {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
 
-/* Main content */
-.container { padding:15px; }
+  /* Hamburger tugma */
+  .menu-toggle {
+    font-size: 1.6rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    display: block;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .menu-toggle:hover {
+    background: var(--hover);
+    transform: scale(1.05);
+  }
 
-/* Footer */
-.footer { text-align:center; padding:15px; background:#222; font-size:0.9rem; }
+  /* Mobil menyu */
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    gap: 0.8rem;
+    background: var(--card);
+    padding: 1rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    animation: slideDown 0.3s ease forwards;
+  }
+  .mobile-nav.open { display: flex; }
 
-/* Responsive */
-@media(min-width:768px){
-    .nav-mobile { justify-content:flex-start; gap:20px; }
-    .mobile-menu { display:flex; flex-direction:row; background:none; }
-    .mobile-menu a { border:none; padding:0 10px; }
-}
+  .mobile-nav a {
+    padding: 0.8rem;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: background 0.3s ease;
+  }
+  .mobile-nav a:hover {
+    background: var(--hover);
+  }
+
+  /* Footer markazda */
+  .footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    border-top: 1px solid var(--line);
+    background: var(--card);
+  }
+
+  /* Animatsiya */
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+
+
