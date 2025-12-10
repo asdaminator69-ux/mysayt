@@ -92,8 +92,11 @@ LOGOUT_REDIRECT_URL = 'movies:home'
 #   STATIC FILES
 # --------------------
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']   # dev uchun
-STATIC_ROOT = BASE_DIR / 'staticfiles'     # render uchun
+STATICFILES_DIRS = [
+BASE_DIR / 'static'
+]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Whitenoise optimizatsiya
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
