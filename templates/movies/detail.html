@@ -1,0 +1,121 @@
+<!-- templates/movies/detail.html -->
+{% extends 'base.html' %}
+{% block title %}{{ movie.title }} – Kinokoramiz{% endblock %}
+{% block content %}
+
+<article class="detail">
+  <aside class="detail-media glass">
+    <img class="poster" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+    <div class="meta-box">
+      <p><strong>Kategoriya:</strong> {{ movie.category.name }}</p>
+      {% if movie.release_year %}<p><strong>Yil:</strong> {{ movie.release_year }}</p>{% endif %}
+      {% if movie.duration_min %}<p><strong>Davomiyligi:</strong> {{ movie.duration_min }} daqiqa</p>{% endif %}
+      <div class="tags">
+        <strong>Taglar:</strong>
+        {% for t in movie.tags.all %}
+          <a class="tag" href="{% url 'movies:search' %}?tag={{ t.slug }}">#{{ t.name }}</a>
+        {% empty %}
+          <span class="tag none">Taglar yo‘q</span>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+
+  <section class="detail-info">
+    <h1 class="detail-title">{{ movie.title }}</h1>
+    <p class="detail-desc">{{ movie.description }}</p>
+
+    <div class="video glass">
+      {% if movie.video_file %}
+        <video id="player" class="video-player" preload="metadata">
+          <source src="{{ movie.video_file.url }}" type="video/mp4">
+        </video>
+        <div class="player-controls">
+          <button class="icon-btn" id="playPause">▶/⏸</button>
+          <button class="icon-btn" id="rewind">⏪ 10s</button>
+          <button class="icon-btn" id="forward">⏩ 10s</button>
+          <label class="range">
+            <span>Ovoz</span>
+            <input type="range" min="0" max="1" step="0.05" id="volume" value="0.9">
+          </label>
+          <label class="range">
+            <span>Tezlik</span>
+            <input type="range" min="0.5" max="2" step="0.25" id="speed" value="1">
+          </label>
+          <button class="icon-btn" id="fullscreen">⛶</button>
+        </div>
+      {% else %}
+        <p>Video fayl mavjud emas.</p>
+      {% endif %}
+    </div>
+
+    <div class="actions">
+      <form action="{% url 'movies:react' movie.id 'like' %}" method="post" class="inline-form">
+        {% csrf_token %}<button type="submit" class="btn">👍 Like ({{ likes }})</button>
+      </form>
+      <form action="{% url 'movies:react' movie.id 'dislike' %}" method="post" class="inline-form">
+        {% csrf_token %}<button type="submit" class="btn">👎 Dislike ({{ dislikes }})</button>
+      </form>
+      {% if user.is_authenticated %}
+        <form action="{% url 'movies:toggle_save' movie.id %}" method="post" class="inline-form">
+          {% csrf_token %}<button type="submit" class="btn">{% if saved %}Saqlangan{% else %}Saqlash{% endif %}</button>
+        </form>
+        <form action="{% url 'movies:toggle_watched' movie.id %}" method="post" class="inline-form">
+          {% csrf_token %}<button type="submit" class="btn">{% if watched %}Ko‘rilgan{% else %}Ko‘rildi deb belgilash{% endif %}</button>
+        </form>
+      {% else %}
+        <p class="hint">Saqlash/ko‘rildi belgilash uchun iltimos, kirish qiling.</p>
+      {% endif %}
+    </div>
+
+    <section class="comments glass">
+      <h2>Kommentlar</h2>
+      {% if user.is_authenticated %}
+        <form action="{% url 'movies:comment' movie.id %}" method="post" class="comment-form">
+          {% csrf_token %}
+          <textarea name="body" rows="3" placeholder="Fikringizni yozing..." required></textarea>
+          <button type="submit" class="btn primary">Yuborish</button>
+        </form>
+      {% else %}
+        <p class="hint">Komment yozish uchun avval kirish qiling.</p>
+      {% endif %}
+
+      <ul class="comment-list">
+        {% for c in comments %}
+          <li class="comment-item">
+            <div class="comment-head">
+              <strong class="comment-user">{{ c.user.display_name|default:c.user.username }}</strong>
+              <small class="comment-time">{{ c.created_at }}</small>
+            </div>
+            <p class="comment-body">{{ c.body }}</p>
+          </li>
+        {% empty %}
+          <li class="comment-item empty">Hozircha komment yo‘q.</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </section>
+</article>
+
+<script>
+  // Custom video controls
+  (function(){
+    const v = document.getElementById('player');
+    if(!v) return;
+    const playPause = document.getElementById('playPause');
+    const rewind = document.getElementById('rewind');
+    const forward = document.getElementById('forward');
+    const volume = document.getElementById('volume');
+    const speed = document.getElementById('speed');
+    const fullscreen = document.getElementById('fullscreen');
+
+    playPause.addEventListener('click', ()=> v.paused ? v.play() : v.pause());
+    rewind.addEventListener('click', ()=> v.currentTime = Math.max(0, v.currentTime - 10));
+    forward.addEventListener('click', ()=> v.currentTime = Math.min(v.duration, v.currentTime + 10));
+    volume.addEventListener('input', ()=> v.volume = parseFloat(volume.value));
+    speed.addEventListener('input', ()=> v.playbackRate = parseFloat(speed.value));
+    fullscreen.addEventListener('click', ()=> v.requestFullscreen && v.requestFullscreen());
+  })();
+</script>
+
+{% endblock %}

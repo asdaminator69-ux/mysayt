@@ -1,0 +1,58 @@
+<!-- templates/movies/search.html -->
+{% extends 'base.html' %}
+{% block title %}Qidiruv – Kinokoramiz{% endblock %}
+{% block content %}
+
+<section class="section">
+  <div class="section-head">
+    <h1>Qidiruv natijalari</h1>
+    <form action="{% url 'movies:search' %}" method="get" class="filters glass sm" id="searchForm">
+      <input type="text" name="q" value="{{ q }}" placeholder="Kalit so‘z…">
+      <select name="cat">
+        <option value="">Kategoriya…</option>
+        {% for c in categories %}
+          <option value="{{ c.slug }}" {% if request.GET.cat == c.slug %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+      <select name="sort">
+        <option value="">Saralash…</option>
+        <option value="latest" {% if request.GET.sort == 'latest' %}selected{% endif %}>Eng yangi</option>
+        <option value="popular" {% if request.GET.sort == 'popular' %}selected{% endif %}>Mashhur</option>
+      </select>
+      <button class="btn sm" type="submit">Filtrlash</button>
+    </form>
+  </div>
+
+  <div class="grid modern" id="results">
+    {% for m in movies %}
+      <a class="card hover-zoom" href="{% url 'movies:detail' m.slug %}">
+        <div class="card-media">
+          <img src="{{ m.poster.url }}" alt="{{ m.title }}">
+          <div class="media-overlay"><button class="play-btn">▶</button></div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ m.title }}</h3>
+          <p class="card-sub">{{ m.category.name }}</p>
+        </div>
+      </a>
+    {% empty %}
+      <p>Natija topilmadi. Boshqa so‘z yoki filtr sinab ko‘ring.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+  // Live search (progressive enhancement): submits form on input
+  (function(){
+    const form = document.getElementById('searchForm');
+    if(!form) return;
+    const input = form.querySelector('input[name="q"]');
+    let t;
+    input && input.addEventListener('input', ()=>{
+      clearTimeout(t);
+      t = setTimeout(()=> form.requestSubmit(), 350);
+    });
+  })();
+</script>
+
+{% endblock %}

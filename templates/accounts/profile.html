@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Profil – Kinokoramiz{% endblock %}
+{% block content %}
+
+<section class="profile">
+  <!-- Profil boshi -->
+  <header class="profile-head glass">
+    <div class="avatar">
+      {% if request.user.profile.avatar %}
+        <img src="{{ request.user.profile.avatar.url }}" alt="{{ request.user.profile.display_name|default:request.user.username }}">
+      {% else %}
+        <div class="avatar-fallback">{{ request.user.username|first|upper }}</div>
+      {% endif %}
+    </div>
+
+    <div class="profile-meta">
+      <h1>{{ request.user.profile.display_name|default:request.user.username }}</h1>
+      {% if request.user.profile.bio %}
+        <p class="bio">{{ request.user.profile.bio }}</p>
+      {% endif %}
+      <p class="small">Email: {{ request.user.email }}</p>
+
+      <div class="stats">
+        <div class="stat">
+          <strong>{{ request.user.profile.saved_movies.count }}</strong>
+          <span>Saqlangan</span>
+        </div>
+        <div class="stat">
+          <strong>{{ request.user.profile.watched_movies.count }}</strong>
+          <span>Ko‘rilgan</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <section class="section tabs">
+    <div class="tab-head">
+      <button class="tab-btn active" data-tab="saved">Saqlangan</button>
+      <button class="tab-btn" data-tab="watched">Ko‘rilgan</button>
+    </div>
+
+    <!-- Saqlangan filmlar -->
+    <div class="tab-body active" id="tab-saved">
+      <div class="grid modern">
+        {% for m in request.user.profile.saved_movies.all %}
+          <a class="card hover-zoom" href="{% url 'movies:detail' m.slug %}">
+            <div class="card-media">
+              <img src="{{ m.poster.url }}" alt="{{ m.title }}">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">{{ m.title }}</h3>
+              <p class="card-sub">{{ m.category.name }}</p>
+            </div>
+          </a>
+        {% empty %}
+          <p>Hali saqlangan film yo‘q.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Ko‘rilgan filmlar -->
+    <div class="tab-body" id="tab-watched">
+      <div class="grid modern">
+        {% for m in request.user.profile.watched_movies.all %}
+          <a class="card hover-zoom" href="{% url 'movies:detail' m.slug %}">
+            <div class="card-media">
+              <img src="{{ m.poster.url }}" alt="{{ m.title }}">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">{{ m.title }}</h3>
+              <p class="card-sub">{{ m.category.name }}</p>
+            </div>
+          </a>
+        {% empty %}
+          <p>Hali ko‘rilgan film yo‘q.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</section>
+
+<script>
+  // Tabsni almashtirish
+  (function(){
+    const buttons = document.querySelectorAll('.tab-btn');
+    const bodies = {
+      saved: document.getElementById('tab-saved'),
+      watched: document.getElementById('tab-watched')
+    };
+    buttons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        buttons.forEach(b=> b.classList.remove('active'));
+        btn.classList.add('active');
+        Object.values(bodies).forEach(el=> el.classList.remove('active'));
+        bodies[btn.dataset.tab].classList.add('active');
+      });
+    });
+  })();
+</script>
+
+{% endblock %}

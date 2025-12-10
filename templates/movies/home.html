@@ -1,0 +1,97 @@
+<!-- templates/movies/home.html -->
+{% extends 'base.html' %}
+{% block title %}Kinokoramiz – Yangi va trend filmlar{% endblock %}
+{% block content %}
+
+<section class="hero gradient glass">
+    <div class="hero-content">
+        <h1>Kinokoramizga xush kelibsiz</h1>
+        <p>O‘zbekcha kino va multfilmlar. Bu saytimzdan boshqa saytlarda topolmgan kino va mutfilmlarni topasiz.</p>
+        <div class="hero-actions">
+
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2>Trend filmlar</h2>
+        <div class="section-actions">
+            <button class="icon-btn" id="trendPrev">←</button>
+            <button class="icon-btn" id="trendNext">→</button>
+        </div>
+    </div>
+
+    <div class="carousel" id="trendCarousel">
+        {% for m in trending_movies %}
+        <a class="slide" href="{% url 'movies:detail' m.slug %}">
+            <img src="{{ m.poster.url }}" alt="{{ m.title }}">
+            <div class="slide-info">
+                <h3>{{ m.title }}</h3>
+                {% if m.release_year %}<span class="year">{{ m.release_year }}</span>{% endif %}
+            </div>
+        </a>
+        {% empty %}
+        <p>Hozircha trend film yo‘q.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <h2>Kategoriyalar</h2>
+    <ul class="chips">
+        {% for c in categories %}
+        <li class="chip">
+            <a href="{% url 'movies:category' c.slug %}">
+                <span class="chip-icon">🏷️</span>
+                {{ c.name }} <span class="chip-count">{{ c.total }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="section">
+    <div class="section-head">
+        <h2>Yangi qo‘shilgan filmlar</h2>
+        <div class="section-actions">
+            <a class="btn sm" href="{% url 'movies:search' %}?sort=latest">Hammasini ko‘rish</a>
+        </div>
+    </div>
+
+    <div class="grid modern">
+        {% for m in movies %}
+        <a class="card hover-zoom" href="{% url 'movies:detail' m.slug %}">
+            <div class="card-media">
+                <img src="{{ m.poster.url }}" alt="{{ m.title }}">
+                <div class="media-overlay">
+                    <button class="play-btn">▶</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">{{ m.title }}</h3>
+                <p class="card-sub">{{ m.category.name }}</p>
+                {% if m.release_year %}<p class="card-meta">Yil: {{ m.release_year }}</p>{% endif %}
+            </div>
+        </a>
+        {% empty %}
+
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+    // Simple carousel without external libs
+    (function () {
+        const wrap = document.getElementById('trendCarousel');
+        if (!wrap) return;
+        const prev = document.getElementById('trendPrev');
+        const next = document.getElementById('trendNext');
+        let scroll = 0;
+        const step = 320;
+        prev && prev.addEventListener('click', () => { wrap.scrollTo({ left: (scroll = Math.max(0, wrap.scrollLeft - step)), behavior: 'smooth' }); });
+        next && next.addEventListener('click', () => { wrap.scrollTo({ left: (scroll = wrap.scrollLeft + step), behavior: 'smooth' }); });
+    })();
+</script>
+
+{% endblock %}
